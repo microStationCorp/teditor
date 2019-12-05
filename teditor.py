@@ -31,10 +31,14 @@ class Notepad:
         self.__root.config(menu=self.__thisMenuBar)
 
         # file Menu Add
-        self.__thisFileMenu.add_command(label="New")
+        self.__thisFileMenu.add_command(label="New",
+                                        command=self.__newFile)
         self.__thisFileMenu.add_command(label="Open",
                                         command=self.__openfile)
-        self.__thisFileMenu.add_command(label="Save")
+        self.__thisFileMenu.add_command(label="Save",
+                                        command=self.__saveFile)
+        self.__thisFileMenu.add_command(label="Save as",
+                                        command=self.__saveAsFile)
         self.__thisFileMenu.add_command(label="Exit",
                                         command=self.__quitApp)
         self.__thisMenuBar.add_cascade(label="File", menu=self.__thisFileMenu)
@@ -71,6 +75,43 @@ class Notepad:
             self.__thisTextArea.insert(1.0, file.read())
 
             file.close()
+
+    def __newFile(self):
+        self.__root.title("No name - Notepad")
+        self.__file = None
+        self.__thisTextArea.delete(1.0, END)
+
+    def __saveFile(self):
+        if self.__file == None:
+            self.__file = asksaveasfilename(initialfile='Untitled.txt',
+                                            defaultextension=".txt",
+                                            filetypes=[("All Files", "*.*"),
+                                                       ("Text Documents", "*.txt")])
+
+            if self.__file == "":
+                self.__file = None
+            else:
+                file = open(self.__file, "w")
+                file.write(self.__thisTextArea.get(1.0, END))
+                file.close()
+                self.__root.title(os.path.basename(self.__file) + " - Notepad")
+        else:
+            file = open(self.__file, "w")
+            file.write(self.__thisTextArea.get(1.0, END))
+            file.close()
+
+    def __saveAsFile(self):
+        self.__file = asksaveasfilename(initialfile=os.path.basename(self.__file),
+                                        defaultextension=".txt",
+                                        filetypes=[("All Files", "*.*"),
+                                                   ("Text Documents", "*.txt")])
+        if self.__file == "":
+            self.__file = None
+        else:
+            file = open(self.__file, "w")
+            file.write(self.__thisTextArea.get(1.0, END))
+            file.close()
+            self.__root.title(os.path.basename(self.__file) + " - Notepad")
 
     def run(self):
         self.__root.mainloop()
