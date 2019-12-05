@@ -44,9 +44,12 @@ class Notepad:
         self.__thisMenuBar.add_cascade(label="File", menu=self.__thisFileMenu)
 
         # Edit Menu Add
-        self.__thisEditMenu.add_command(label="Cut")
-        self.__thisEditMenu.add_command(label="Copy")
-        self.__thisEditMenu.add_command(label="Paste")
+        self.__thisEditMenu.add_command(label="Cut",
+                                        command=self.__cut)
+        self.__thisEditMenu.add_command(label="Copy",
+                                        command=self.__copy)
+        self.__thisEditMenu.add_command(label="Paste",
+                                        command=self.__paste)
         self.__thisMenuBar.add_cascade(label="Edit", menu=self.__thisEditMenu)
 
         # help menu
@@ -112,6 +115,15 @@ class Notepad:
             file.write(self.__thisTextArea.get(1.0, END))
             file.close()
             self.__root.title(os.path.basename(self.__file) + " - Notepad")
+
+    def __cut(self):
+        self.__thisTextArea.event_generate("<<Cut>>")
+
+    def __copy(self):
+        self.__thisTextArea.event_generate("<<Copy>>")
+
+    def __paste(self):
+        self.__thisTextArea.event_generate("<<Paste>>")
 
     def run(self):
         self.__root.mainloop()
