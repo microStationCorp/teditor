@@ -9,6 +9,10 @@ class Notepad:
     __thisHeight = 600
     __thisTextArea = Text(__root)
     __thisScrollBar = Scrollbar(__thisTextArea)
+    __thisMenuBar = Menu(__root)
+    __thisFileMenu = Menu(__thisMenuBar, tearoff=0)
+    __thisEditMenu = Menu(__thisMenuBar, tearoff=0)
+    __thisHelpMenu = Menu(__thisMenuBar, tearoff=0)
 
     def __init__(self):
         # text area and scrollbar
@@ -20,6 +24,26 @@ class Notepad:
         self.__thisScrollBar.pack(side=RIGHT, fill=Y)
         self.__thisScrollBar.config(command=self.__thisTextArea.yview)
         self.__thisTextArea.config(yscrollcommand=self.__thisScrollBar.set)
+
+        # menu add
+        self.__root.config(menu=self.__thisMenuBar)
+
+        # file Menu Add
+        self.__thisFileMenu.add_command(label="New")
+        self.__thisFileMenu.add_command(label="Open")
+        self.__thisFileMenu.add_command(label="Save")
+        self.__thisFileMenu.add_command(label="Exit")
+        self.__thisMenuBar.add_cascade(label="File", menu=self.__thisFileMenu)
+
+        # Edit Menu Add
+        self.__thisEditMenu.add_command(label="Cut")
+        self.__thisEditMenu.add_command(label="Copy")
+        self.__thisEditMenu.add_command(label="Paste")
+        self.__thisMenuBar.add_cascade(label="Edit", menu=self.__thisEditMenu)
+
+        # help menu
+        self.__thisHelpMenu.add_command(label="about")
+        self.__thisMenuBar.add_cascade(label="Help", menu=self.__thisHelpMenu)
 
     def run(self):
         self.__root.mainloop()
