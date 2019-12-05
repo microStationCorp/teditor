@@ -5,16 +5,14 @@ class Notepad:
     __root = Tk()
 
     # default window width and height
-    __thisWidth = 300
-    __thisHeight = 300
+    __thisWidth = 600
+    __thisHeight = 600
     __thisTextArea = Text(__root)
     __thisScrollBar = Scrollbar(__thisTextArea)
 
-    def __init__(self, **kwargs):
-        #text area and scrollbar
-        self.__thisWidth = kwargs['width']
-        self.__thisHeight = kwargs['height']
-        self.__root.title("notepad")
+    def __init__(self):
+        # text area and scrollbar
+        self.__root.title("Notepad")
         self.__root.geometry('%dx%d' % (self.__thisWidth, self.__thisHeight))
         self.__root.grid_rowconfigure(0, weight=1)
         self.__root.grid_columnconfigure(0, weight=1)
@@ -27,5 +25,5 @@ class Notepad:
         self.__root.mainloop()
 
 
-notepad = Notepad(width=600, height=600)
+notepad = Notepad()
 notepad.run()
