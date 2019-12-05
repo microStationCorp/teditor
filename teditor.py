@@ -1,4 +1,5 @@
-from tkinter import *
+from tkinter.filedialog import *
+from tkinter.messagebox import *
 
 
 class Notepad:
@@ -13,6 +14,7 @@ class Notepad:
     __thisFileMenu = Menu(__thisMenuBar, tearoff=0)
     __thisEditMenu = Menu(__thisMenuBar, tearoff=0)
     __thisHelpMenu = Menu(__thisMenuBar, tearoff=0)
+    __file = None
 
     def __init__(self):
         # text area and scrollbar
@@ -30,9 +32,11 @@ class Notepad:
 
         # file Menu Add
         self.__thisFileMenu.add_command(label="New")
-        self.__thisFileMenu.add_command(label="Open")
+        self.__thisFileMenu.add_command(label="Open",
+                                        command=self.__openfile)
         self.__thisFileMenu.add_command(label="Save")
-        self.__thisFileMenu.add_command(label="Exit")
+        self.__thisFileMenu.add_command(label="Exit",
+                                        command=self.__quitApp)
         self.__thisMenuBar.add_cascade(label="File", menu=self.__thisFileMenu)
 
         # Edit Menu Add
@@ -42,8 +46,31 @@ class Notepad:
         self.__thisMenuBar.add_cascade(label="Edit", menu=self.__thisEditMenu)
 
         # help menu
-        self.__thisHelpMenu.add_command(label="about")
+        self.__thisHelpMenu.add_command(label="about",
+                                        command=self.__about)
         self.__thisMenuBar.add_cascade(label="Help", menu=self.__thisHelpMenu)
+
+    def __quitApp(self):
+        self.__root.destroy()
+
+    def __about(self):
+        showinfo("Notepad", "Sujan mondal")
+
+    def __openfile(self):
+        self.__file = askopenfilename(defaultextension=".txt",
+                                      filetypes=[("All Files", "*.*"),
+                                                 ("Text Documents", "*.txt")])
+
+        if self.__file == "":
+            self.__file = None
+        else:
+            self.__root.title(os.path.basename(self.__file) + " - Notepad")
+            self.__thisTextArea.delete(1.0, END)
+
+            file = open(self.__file, "r")
+            self.__thisTextArea.insert(1.0, file.read())
+
+            file.close()
 
     def run(self):
         self.__root.mainloop()
