@@ -18,7 +18,7 @@ class Notepad:
 
     def __init__(self):
         # text area and scrollbar
-        self.__root.title("Notepad")
+        self.__root.title("Teditor")
         self.__root.geometry('%dx%d' % (self.__thisWidth, self.__thisHeight))
         self.__root.grid_rowconfigure(0, weight=1)
         self.__root.grid_columnconfigure(0, weight=1)
